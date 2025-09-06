@@ -1,64 +1,79 @@
-import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import { StyleSheet, Text, View, Button, TextInput, SafeAreaView } from "react-native";
+
 
 export default function App() {
+
   const [a, setA] = useState(0);
   const [b, setB] = useState(0);
   const [result, setResult] = useState(0);
-
+  
+  
   const handleAdd = () => {
-    setResult(parseInt(a) + parseInt(b));
-  };
+      setResult((parseInt(a) || 0) + (parseInt(b) || 0));
+    };
+
+  const handleReset = () => {
+    setA(0);
+    setB(0);
+    setResult(0);
+  }
 
   return (
-    <View style={styles.container}>
-      <Text>Addition App!</Text>
-      <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
+  <View style={styles.container}>
+
+      <Text style={{ textAlign: "center", fontSize: 24, marginTop: 20}}>Addition App!</Text>
+
+
+    <View style={{ flex:1, padding:16, justifyContent:"center" }}>
+
+
+      <View style={styles.calculatorbox}>
+    
         <TextInput
-          style={styles.input}
-          title="a"
-          onChangeText={setA}
-          value={a}
-        />
-        <Text> + </Text>
+        style={styles.input} placeholder="0" keyboardType="numeric" inputMode="numeric" onChangeText={setA} value={a}
+        ></TextInput>
+  
+        <Text style={{fontSize: 45}}> + </Text>
+    
         <TextInput
-          style={styles.input}
-          title="b"
-          onChangeText={setB}
-          value={b}
-        />
+        style={styles.input} placeholder="0" keyboardType= "numeric" inputMode="numeric" onChangeText={setB} value={b}
+        ></TextInput>
+  
+        <Text style={{fontSize: 45}}> = {result} </Text>
+
+
       </View>
-      <Button style={styles.button} title="Calculate" onPress={handleAdd} />
-      <Text styles={styles.result}>Result: {result}</Text>
-      <StatusBar style="auto" />
+
     </View>
+    <View style={{ height:125, backgroundColor:'black', justifyContent:'center', paddingHorizontal:16 , paddingBottom:8, gap: 10}}>
+      <Button style={styles.button} title="Calculate" onPress={handleAdd}/>
+      <Button style={styles.button} title="Reset" onPress={handleReset}/>
+    
+    </View>
+</View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#b0b0b0b0",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#f9f3c9ff",
   },
   input: {
-    color: "00000000",
-    keyboardType: "numeric",
-    borderColor: "gray",
-    borderWidth: 1,
-    width: 30,
-    height: 30,
+    color: "#000000",
+    borderColor: "black",
+    borderWidth: 3,
+    borderRadius: 20,
+    width: 80,
+    height: 80,
     textAlign: "center",
     marginBottom: 10,
+    fontSize: 32,
   },
-  button: {
-    marginBottom: 10,
-  },
-  result: {
-    marginTop: 20,
-    fontSize: 20,
-    fontWeight: "bold",
+  calculatorbox: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
