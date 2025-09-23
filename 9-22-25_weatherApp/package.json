@@ -1,5 +1,5 @@
 {
-  "name": "stickerbook",
+  "name": "9-22-25_weatherapp",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "expo": "~54.0.9",
+    "expo-location": "~19.0.7",
     "expo-status-bar": "~3.0.8",
     "react": "19.1.0",
     "react-native": "0.81.4"
