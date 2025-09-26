@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const ForcastCard = ({ wx }) => {
+const ForecastCard = ({ wx }) => {
   const rows = [];
   if (wx?.daily && wx?.daily.time) {
     for (let i = 1; i <= 5; i++) {
@@ -17,7 +17,7 @@ const ForcastCard = ({ wx }) => {
   );
 };
 
-export default ForcastCard;
+export default ForecastCard;
 
 const styles = StyleSheet.create({
   card: {

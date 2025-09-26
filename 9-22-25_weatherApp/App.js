@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { useState, useEffect, use } from "react";
 import * as Location from "expo-location";
-import ForecastCard from "./Components/ForcastCard";
+import ForecastCard from "./Components/ForecastCard";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
