@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { useState, useEffect, use } from "react";
 import * as Location from "expo-location";
+import ForecastCard from "./Components/ForcastCard";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -61,6 +62,7 @@ export default function App() {
     <View style={styles.container}>
       {!loading && (
         <>
+          <ForecastCard wx={wx} />
           <Text>Weather App</Text>
           <Text>Latitude: {coords?.latitude}</Text>
           <Text>Longitude: {coords?.longitude}</Text>
