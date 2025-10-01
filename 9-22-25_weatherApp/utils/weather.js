@@ -14,3 +14,5 @@ export const codeToEmoji = (code) => {
   if ([95, 96, 99].includes(code)) return "⛈️ Thunderstorm";
   return "🌡️ Weather";
 };
+
+export const cTof = (c) => (c * 9) / 5 + 32;
