@@ -1,35 +1,43 @@
-import { StyleSheet, View, Text } from "react-native";
-import { useState } from "react";
+import { StyleSheet, View, Text, Image } from "react-native";
 import AppButton from "./ui/AppButton";
 
-export default function Sticker() {
-  const [count, setCount] = useState(0);
-
-  const handlepress = () => {
-    setCount(count + 1);
-    console.log("i got pressed");
-  };
+export default function Sticker({label, imageSrc, onCollect, count}) {
 
   return (
-    <View style={styles.sticker}>
-      <View>
-        <Text style={styles.count}>{count}</Text>
-      </View>
-      <AppButton style={styles.button} title="counter" onPress={handlepress} />
+    <View style={styles.card}>
+      <Image source={imageSrc} style={{ width: 125, height: 125, }} accessibilityLabel={label}/>
+      <Text style={styles.count}>{count}</Text>
+      <Text style={styles.label}>{label}</Text>
+      <AppButton style={styles.button} title="Collect" onPress={onCollect} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  sticker: {
-    width: 125,
-    height: 175,
-    backgroundColor: "blue",
-    justifyContent: "flex-end",
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 25,
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 10,
   },
   count: {
-    color: "white",
+    color: "black",
     fontSize: 20,
     textAlign: "center",
   },
+  label: {
+    color: "black",
+    textAlign: "center",
+    fontWeight: "bold",
+    marginBottom: 10,
+  }
 });
