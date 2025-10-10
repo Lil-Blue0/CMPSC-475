@@ -1,0 +1,44 @@
+{
+    "flashcards": [
+        {
+            "question": "What is a system of linear equations?",
+            "answer": "A collection of one or more linear equations involving the same set of variables."
+        },
+        {
+            "question": "What are the three elementary row operations?",
+            "answer": "1. Replacement (add to one row a multiple of another)\n2. Interchange (swap two rows)\n3. Scaling (multiply all entries in a row by a nonzero constant)."
+        },
+        {
+            "question": "What does it mean for a system of linear equations to be consistent?",
+            "answer": "A system is consistent if it has at least one solution. Otherwise, it is inconsistent."
+        },
+        {
+            "question": "What is an augmented matrix?",
+            "answer": "A matrix representing a system of linear equations, formed by appending the constant terms column to the coefficient matrix."
+        },
+        {
+            "question": "What is Row Echelon Form?",
+            "answer": "1. All nonzero rows are above any rows of all zeros.\n2. Each leading entry of a row is in a column to the right of the leading entry of the row above it."
+        },
+        {
+            "question": "What is Reduced Row Echelon Form (RREF)?",
+            "answer": "It satisfies Row Echelon Form conditions, plus:\n1. The leading entry in each nonzero row is 1.\n2. Each leading 1 is the only nonzero entry in its column."
+        },
+        {
+            "question": "What is a pivot position in a matrix?",
+            "answer": "A location in a matrix that corresponds to a leading 1 in the reduced row echelon form of the matrix."
+        },
+        {
+            "question": "What is a vector in R^n?",
+            "answer": "An ordered list (or n-tuple) of n real numbers, often represented as a column matrix."
+        },
+        {
+            "question": "What is a linear combination of vectors?",
+            "answer": "A sum of scalar multiples of vectors. e.g., y = c1*v1 + c2*v2 + ... + cp*vp"
+        },
+        {
+            "question": "What is the span of a set of vectors {v1, ..., vp}?",
+            "answer": "The set of all possible linear combinations of v1, ..., vp. Denoted as Span{v1, ..., vp}."
+        }
+    ]
+}
