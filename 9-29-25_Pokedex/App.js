@@ -18,6 +18,7 @@ import Pokedex from "./components/Pokedex";
 import Pokemon from "./components/Pokemon";
 import Settings from "./components/Settings";
 import { HeaderStyles, DrawerStyles } from "./styles/SharedStyles";
+import store from "./store/store";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
