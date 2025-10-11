@@ -27,32 +27,23 @@ export default function LogScreen() {
       const existingEntriesJSON = await AsyncStorage.getItem("moodEntries");
       let entries = existingEntriesJSON ? JSON.parse(existingEntriesJSON) : [];
 
-      console.log("Current Date:", localDate);
-      console.log("Entries before save:", JSON.stringify(entries, null, 2));
-
       const existingIndex = entries.findIndex(
         (entry) => entry.date === localDate
       );
 
       if (existingIndex !== -1) {
-        console.log(`Updating entry for ${localDate}`);
         entries[existingIndex] = moodEntry; // Update existing entry
       } else {
-        console.log(`Adding new entry for ${localDate}`);
         entries.push(moodEntry); // Add new entry
       }
       await AsyncStorage.setItem("moodEntries", JSON.stringify(entries));
-      console.log("Mood entry saved:", moodEntry);
-      console.log("Entries after save:", JSON.stringify(entries, null, 2));
-    } catch (error) {
-      console.error("Error saving mood entry:", error);
-    }
+    } catch (error) {}
   };
 
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-        How are you Feeling
+        How are you Feeling Today?
       </Text>
       <View style={styles.MoodButtonContainer}>
         <MoodButton
@@ -113,7 +104,7 @@ export default function LogScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#ffffffb0",
     alignItems: "center",
     justifyContent: "space-around",
   },
@@ -133,7 +124,7 @@ const styles = StyleSheet.create({
     height: 160,
     textAlign: "left",
     textAlignVertical: "top",
-    marginBottom: 10,
+    marginBottom: 20,
     fontSize: 16,
     padding: 10,
   },
