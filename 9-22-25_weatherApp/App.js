@@ -9,9 +9,19 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 import * as Location from "expo-location";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons } from "@expo/vector-icons";
+
+import Forecast from "./components/screens/Forecast";
+import LocationScreen from "./components/screens/Location";
+import Settings from "./components/screens/Settings";
+import TodaysWeatherStack from "./components/TodaysWeatherStack";
 
 import CurrentWeatherCard from "./components/CurrentWeatherCard";
 import ForecastCard from "./components/ForecastCard";
+import { NavigationContainer } from "@react-navigation/native";
 // Don't forget to install: npx expo install expo-location
 // URL example: const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.latitude}&longitude=${coords.longitude}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
 
@@ -20,6 +30,31 @@ export default function App() {
   const [error, setError] = useState(null);
   const [wx, setWx] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [unit, setUnit] = useState("C");
+  const [savedZips, setSavedZips] = useState([]);
+
+  const addZipCode = async (zip) => {
+    if (!zip || zip.length < 5) return;
+
+    const newZips = [zip, ...savedZips.filter((z) => z !== zip)].slice(0, 5); // Keep max 5
+    setSavedZips(newZips);
+    try {
+      await AsyncStorage.setItem("@savedZips", JSON.stringify(newZips));
+    } catch (e) {
+      console.error("Failed to save zip codes", e);
+    }
+  };
+
+
+  const toggleUnit = async () => {
+    const newUnit = unit === "C" ? "F" : "C";
+    setUnit(newUnit);
+    try {
+      await AsyncStorage.setItem("@unit", newUnit);
+  } catch (e) {
+      console.error("Failed to save unit", e);
+    }
+  };
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -70,9 +105,11 @@ export default function App() {
 
   const getLocFromZip = async (zip) => {
     setError(null);
+    setLoading(true);
     try {
       let geocode = await Location.geocodeAsync(zip);
       if (geocode.length > 0) {
+        const { latitude, longitude } = geocode[0];
         console.log(
           "The latitude and longitude for zip code " +
             zip +
@@ -82,14 +119,34 @@ export default function App() {
             JSON.stringify(geocode[0].longitude) +
             "."
         );
+        await getWeather({ latitude, longitude });
+        await addZipCode(zip);
+
+      } else {
+        setError("No location found for the provided zip code.");
       }
+
     } catch (error) {
       setError(error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     const fetchAll = async () => {
+      try {
+        const savedUnit = await AsyncStorage.getItem("@unit");
+        if (savedUnit !== null) {
+          setUnit(savedUnit);
+        }
+
+        const savedZipsJSON = await AsyncStorage.getItem("@savedZips");
+        if (savedZipsJSON !== null) {
+          setSavedZips(JSON.parse(savedZipsJSON));
+        }
+      } catch (e) {
+        console.error("Failed to load settings", e);
+      }
       setLoading(true);
       await getLocationAndWeather();
       setLoading(false);
@@ -97,44 +154,63 @@ export default function App() {
     fetchAll();
   }, []);
 
+
+  const BottomTab = createBottomTabNavigator();
+
   return (
-    <View style={styles.container}>
-      {!loading && (
-        <ScrollView
-          style={styles.scrollStyle}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+
+    <NavigationContainer>
+
+    <BottomTab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Forecast') {
+            iconName = focused ? 'cloud' : 'cloud-outline';
+          } else if (route.name === 'Location') {
+            iconName = focused ? 'location' : 'location-outline';
+          } else if (route.name === 'Settings') {
+            iconName = focused ? 'settings' : 'settings-outline';
           }
-        >
-          <CurrentWeatherCard wx={wx} unit="F" />
-          <ForecastCard wx={wx} unit="F" />
-          <Button
-            title="Get Location From Zip"
-            onPress={() => getLocFromZip("18640")}
+
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+      })}
+    >
+      <BottomTab.Screen name="Forecast">
+        {(props) => (
+          <Forecast
+            {...props}
+            wx={wx}
+            loading={loading}
+            error={error}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            getLocFromZip={getLocFromZip}
+            unit={unit}
+            toggleUnit={toggleUnit}
           />
-        </ScrollView>
-      )}
+        )}
+      </BottomTab.Screen>
+      <BottomTab.Screen name="Location"> 
+        {(props) => (<LocationScreen 
+        {...props}
+        savedZips={savedZips}
+        getLocFromZip={getLocFromZip}
+        addZipCode={addZipCode}
+        />)}
+      </BottomTab.Screen>
+      <BottomTab.Screen name="Settings" >
+        {(props) => (<Settings {...props} unit={unit} toggleUnit={toggleUnit}/>)}
+      </BottomTab.Screen>
+    </BottomTab.Navigator>
+    </NavigationContainer>
 
-      {loading && (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Text
-            style={{
-              fontSize: 24,
-              marginBottom: 20,
-              fontWeight: "bold",
-              color: "#00bd19",
-            }}
-          >
-            Loading...
-          </Text>
-          <ActivityIndicator size={"large"} color={"#00bd19"} />
-        </View>
-      )}
 
-      {error && <Text>Error: {error}</Text>}
-    </View>
   );
 }
 

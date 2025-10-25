@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { cTof, codeToEmoji } from "../utils/weather";
 
-const Days = ({ wx, unit }) => {
+
+const Days = ({ wx, unit, navigation }) => {
   const row = [];
   if (wx?.daily && wx?.daily.time) {
     for (let i = 0; i < 5; i++) {
@@ -17,29 +18,45 @@ const Days = ({ wx, unit }) => {
         unit === "F"
           ? Math.round(cTof(wx.daily.temperature_2m_max[i]))
           : Math.round(wx.daily.temperature_2m_max[i]);
+      
+      const weathercode = wx.daily.weathercode[i];
+
+      const handlePress = () => {
+        navigation.navigate('TodaysWeather', {
+          dayData: { date, min, max, tempUnit, weathercode },
+        });
+      };
 
       row.push(
-        <View key={i} style={styles.row}>
+        <Pressable 
+        key={i}
+        onPress={handlePress}
+        style={({ pressed }) => [
+          styles.row,
+          { backgroundColor: pressed ? '#e0e0e0' : 'transparent' },
+        ]}
+      >
+
           <Text style={styles.rowText}>{date}</Text>
           <Text style={styles.rowText}>
-            {codeToEmoji(wx.daily.weathercode[i])}
+            {codeToEmoji(weathercode)}
           </Text>
           <Text style={styles.rowText}>
             {max}/{min}
             {tempUnit}
           </Text>
-        </View>
+        </Pressable>
       );
     }
   }
   return row;
 };
 
-const ForecastCard = ({ wx, unit }) => {
+const ForecastCard = ({ wx, unit, navigation }) => {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>5 Day Forecast</Text>
-      <Days wx={wx} unit={unit} />
+      <Days wx={wx} unit={unit} navigation={navigation} />
     </View>
   );
 };
