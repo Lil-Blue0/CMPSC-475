@@ -15,6 +15,7 @@ export default function MoodButton({
   style,
   textStyle,
   img,
+  selected,
 }) {
   // Determine background color and disabled state
   const flat = StyleSheet.flatten(style) || {};
@@ -24,6 +25,7 @@ export default function MoodButton({
   // Compose the Pressable style separately for readability
   const getButtonStyle = ({ pressed }) => [
     styles.button,
+    selected ? styles.selected : null,
     { backgroundColor, opacity: isDisabled ? 0.5 : 1 },
     pressed && !isDisabled ? styles.pressed : null,
     style,
@@ -42,26 +44,35 @@ export default function MoodButton({
       disabled={isDisabled}
       style={getButtonStyle}
     >
-      <Image style={styles.img} source={img}/>
+      <Image style={styles.img} source={img} />
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    marginHorizontal: 5,
-    borderRadius: 12,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     alignItems: "center",
     justifyContent: "center",
-    minHeight: 44,
   },
   pressed: {
     opacity: 0.85,
   },
   img: {
-    width: 32,
-    height: 32,
+    width: 58,
+    height: 58,
+  },
+  selected: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    alignItems: "center",
+    justifyContent: "center",
+    opacity: 0.85,
+    borderWidth: 4, // Add this
+    borderColor: "#FFD700", // Gold border for highlight
+    backgroundColor: "#ffe066",
   },
 });

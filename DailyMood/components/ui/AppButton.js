@@ -26,7 +26,7 @@ export default function AppButton({
 }) {
   // Determine background color and disabled state
   const flat = StyleSheet.flatten(style) || {};
-  const backgroundColor = flat.backgroundColor ?? color ?? "#2196F3";
+  const backgroundColor = flat.backgroundColor ?? color ?? "#f39121ff";
   const isDisabled = !!disabled;
 
   // Compose the Pressable style separately for readability
