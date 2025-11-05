@@ -85,10 +85,4 @@ export const scheduleData = {
       },
     ],
   },
-  tips: [
-    "Be Honest About 'Catch-Up': For your 3 priority classes (431W, 318, 220), your first goal isn't just to do the new homework. It's to go back to where you got lost. Start there.",
-    "Active Studying Only: MATH & STAT: Do practice problems. CMPSC 431W: Write SQL queries and draw diagrams. CMPSC 475: Write, compile, and debug code.",
-    "Use Office Hours: Take specific problems from your study sessions to your professors or TAs.",
-    "Be Flexible, Not Soft: If you have an exam, swap a block. But do not skip a block. Discipline is key.",
-  ],
 };
