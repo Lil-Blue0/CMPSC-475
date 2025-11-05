@@ -33,6 +33,7 @@
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone.",
           "recordAndroidPermission": true
         }
+<<<<<<< HEAD
       ],
       [
         "expo-media-library",
@@ -41,6 +42,8 @@
           "savePhotosPermission": "Allow $(PRODUCT_NAME) to save your photos.",
           "isAccessMediaLocationEnabled": true
         }
+=======
+>>>>>>> 99b68266732270ebae2a140cb2978c444049f17d
       ]
     ]
   }
